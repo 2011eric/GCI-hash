@@ -36,8 +36,16 @@ def hash(hashtype,string):
 args = process_command()
 if args.mode == "hash":
     if args.hashtype == None:
-        print("You must enter type of hash")
+        print("You must enter type of hash!")
     else:
-        print("Mode: hash")
-        print("HashType: "+args.hashtype)
-        print("Result: "+hash(args.hashtype,args.string))
+        result = hash(args.hashtype,args.string)
+        if result == None:
+            print("Wrong type of hash!")
+        else:
+            print("Mode: hash")
+            print("HashType: "+args.hashtype)
+            print("Result: "+result)
+elif args.mode =="crack":
+    pass
+else:
+    print("Wrong mode!")

@@ -1,6 +1,8 @@
 from argparse import ArgumentParser
 import hashlib
+import os
 
+crack_data = {}
 def process_command():
     help_text = """ 
     This program supports:
@@ -18,7 +20,7 @@ def process_command():
     return parser.parse_args()
 def hash(hashtype,string):
     hashobj = {
-        "md5":lambda :hashlib.md5() ,
+        "md5":lambda : hashlib.md5() ,
         "sha1":lambda : hashlib.sha1(),
         "sha224":lambda : hashlib.sha224(),
         "sha256":lambda : hashlib.sha256(),
@@ -31,7 +33,12 @@ def hash(hashtype,string):
         return m.hexdigest()
     else:
         return None
-
+def readfile(path):
+    with open(path,"r") as fp:
+        for line in fp.readlines():
+            (string,hashed) = line.split()
+            crack_data[hashed]=string
+        
        
 args = process_command()
 if args.mode == "hash":
@@ -46,6 +53,11 @@ if args.mode == "hash":
             print("HashType: "+args.hashtype)
             print("Result: "+result)
 elif args.mode =="crack":
-    pass
+    path = input("Please enter the path of wordlist:")
+    readfile(path)
+    if args.string in crack_data:
+        print("hash cracked:"+crack_data[args.string])
+    else:
+        print("hash not found!")
 else:
     print("Wrong mode!")
